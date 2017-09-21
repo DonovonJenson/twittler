@@ -3,6 +3,7 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+  <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <script>
@@ -12,13 +13,30 @@
         $body.html('');
 
         var index = streams.home.length - 1;
+        var startTweets = streams.home.length - 1;
+
         while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          makeTweet(index);
           index -= 1;
         }
+
+        function makeTweet(location){
+          var tweet = streams.home[location];
+          var $tweet = $('<div class = \'tweet\'></div>');
+          $tweet.text('@' + tweet.user + ': ' + tweet.message + tweet.created_at);
+          $tweet.appendTo($body);
+        }
+
+        function checkNewTweets(){
+          var newTweets = streams.home.length-1;
+          if (newTweets !== startTweets){
+            for (var i = startTweets; startTweets < newTweets; i++){
+              makeTweet(i)
+              startTweets++;
+            }
+          }
+        }
+            setInterval(checkNewTweets, 5000);
 
       });
 
