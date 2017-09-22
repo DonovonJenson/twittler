@@ -28,7 +28,7 @@
         function tweetBuild(tweet){
         var $tweet = $('<div class = \'tweet\'><p> ' + tweet.message + '<p></div>');
         var $user = $('<div class = \'name\'><div class = \'username\'><a href="javascript:;">@' + tweet.user + '</a></div></div>');
-        var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at +'</div>');
+        var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at  +'</div>');
         $user.appendTo($body);
         $tweet.appendTo($user);
         $timestamp.appendTo($tweet);
@@ -54,7 +54,7 @@
                 clearInterval(checkTweets);
                 startTweets = 0;
                 var $button = $('<div class = \'return\'><button>Return to Live Feed</button></div>')
-                for (var i = 0; i < streams.users[name].length-1; i++){
+                for (var i = 0; i < streams.users[name].length; i++){
                   tweetBuild(streams.users[name][i]);
                 }
               $button.appendTo($('h1'));
@@ -70,12 +70,6 @@
               checkTweets = setInterval(checkNewTweets, 5000);
             });
 
-            $('body').on('mouseenter','.name',function(){
-              $(this.getElementsByClassName('username')).toggleClass('highlight');
-            })
-            $('body').on('mouseleave','.name',function(){
-              $(this.getElementsByClassName('username')).toggleClass('highlight');
-            })
       });
     </script>
   </body>
