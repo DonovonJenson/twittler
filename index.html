@@ -22,9 +22,12 @@
 
         function makeTweet(location){
           var tweet = streams.home[location];
-          var $tweet = $('<div class = \'tweet\'></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + tweet.created_at);
-          $tweet.appendTo($body);
+          var $tweet = $('<div class = \'tweet\'><p> ' + tweet.message + '<p></div>');
+          var $user = $('<div class = \'name\'>@' + tweet.user + '</div>');
+          var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at +'</div>');
+          $user.appendTo($body);
+          $tweet.appendTo($user);
+          $timestamp.appendTo($tweet);
         }
 
         function checkNewTweets(){
@@ -36,10 +39,23 @@
             }
           }
         }
-            setInterval(checkNewTweets, 5000);
+
+            var checkTweets = setInterval(checkNewTweets, 5000);
+
+            $('.name').on("click",function(){
+            //username = username.replace('@','');
+            var name = ($(this).text());
+            name = name.match(/@\b[a-z]*/)[0].slice(1,name.length);
+              $('.name').remove();
+              clearInterval(checkTweets);
+              var $button = $('<div class = \'return\'><button>Return to Feed</button></div>')
+              $button.appendTo($body);
+              for (var i = 0; i < streams.users[name].length-1; i++){
+                console.log(streams.users[name][i]);
+              }
+            })
 
       });
-
     </script>
   </body>
 </html>
