@@ -6,15 +6,15 @@
   <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class = 'header'>
+          <h1>Welcome To Twittler!</h1>
+          <h2>Automatically updates with new Twittles!</h2>
+        </div>
     <script>
-
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
-
         var index = streams.home.length - 1;
         var startTweets = streams.home.length - 1;
-
         while(index >= 0){
           makeTweet(index);
           index -= 1;
@@ -22,13 +22,17 @@
 
         function makeTweet(location){
           var tweet = streams.home[location];
-          var $tweet = $('<div class = \'tweet\'><p> ' + tweet.message + '<p></div>');
-          var $user = $('<div class = \'name\'>@' + tweet.user + '</div>');
-          var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at +'</div>');
-          $user.appendTo($body);
-          $tweet.appendTo($user);
-          $timestamp.appendTo($tweet);
+          tweetBuild(tweet);
         }
+
+        function tweetBuild(tweet){
+        var $tweet = $('<div class = \'tweet\'><p> ' + tweet.message + '<p></div>');
+        var $user = $('<div class = \'name\'><div class = \'username\'><a href="javascript:;">@' + tweet.user + '</a></div></div>');
+        var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at +'</div>');
+        $user.appendTo($body);
+        $tweet.appendTo($user);
+        $timestamp.appendTo($tweet);
+      }
 
         function checkNewTweets(){
           var newTweets = streams.home.length-1;
@@ -42,19 +46,36 @@
 
             var checkTweets = setInterval(checkNewTweets, 5000);
 
-            $('.name').on("click",function(){
-            //username = username.replace('@','');
-            var name = ($(this).text());
-            name = name.match(/@\b[a-z]*/)[0].slice(1,name.length);
-              $('.name').remove();
-              clearInterval(checkTweets);
-              var $button = $('<div class = \'return\'><button>Return to Feed</button></div>')
-              $button.appendTo($body);
-              for (var i = 0; i < streams.users[name].length-1; i++){
-                console.log(streams.users[name][i]);
+            $('body').on("click",".username",function seeTimeline(){
+              if (!$('.return').length){
+                var name = ($(this).text());
+                name = name.match(/@\b[a-z]*/)[0].slice(1,name.length);
+                $('.name').remove();
+                clearInterval(checkTweets);
+                startTweets = 0;
+                var $button = $('<div class = \'return\'><button>Return to Live Feed</button></div>')
+                for (var i = 0; i < streams.users[name].length-1; i++){
+                  tweetBuild(streams.users[name][i]);
+                }
+              $button.appendTo($('h1'));
+              $('h2').text('')
               }
-            })
+            });
 
+
+            $('body').on("click",".return",function(){
+              $('.name').remove();
+              $('.return').remove();
+              checkNewTweets();
+              checkTweets = setInterval(checkNewTweets, 5000);
+            });
+
+            $('body').on('mouseenter','.name',function(){
+              $(this.getElementsByClassName('username')).toggleClass('highlight');
+            })
+            $('body').on('mouseleave','.name',function(){
+              $(this.getElementsByClassName('username')).toggleClass('highlight');
+            })
       });
     </script>
   </body>

@@ -4,13 +4,42 @@ padding: 9px 12px;
 border: 1px solid;
 background-color: lightblue;
 font-weight: bold;
-width:auto;
+width: 50%;
+margin:auto;
+text-align:center;
 }
 
 .tweet {
-  font-weight: normal;
+  font-weight: bold;
+  padding: 0px;
+  margin-top: -15px;
 }
 
-.timestamp {
-  font-weight: lighter;
+.timestamp{
+  font-weight: normal;
+    margin-top: -15px;
+}
+
+.highlight {
+  color: red;
+}
+
+.header {
+  font-size: 30px;
+  text-align: center;
+  background-color: lightgreen;
+  border-radius: 10px;
+  width:auto;
+  text-shadow: 2px 2px lightblue;
+  font-style: italic;
+}
+
+body {
+  background-color: turquoise;
+}
+
+.return {
+  margin: auto;
+  width: 50%;
+  height: 20%;
 }
