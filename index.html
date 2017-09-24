@@ -6,12 +6,30 @@
   <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class = 'top'>
     <div class = 'header'>
           <h1>Welcome To Twittler!</h1>
-          <h2>Automatically updates with new Twittles!</h2>
+          <h2>Automatically updates!</h2>
         </div>
+      </div>
     <script>
       $(document).ready(function(){
+
+       function addTweetBox(){
+        $('.top').append('<div class = \'author\'><form>Write Your Own!<br><input type="text" class = \'message\'><input type="submit"></form></div>')
+        visitor = 'Visitor'
+        streams.users[visitor] = [];
+        $('.author').submit(function(){
+        writeTweet($('.message').val())
+        $('.message').val('')
+        checkNewTweets();
+          return false;
+        })
+      }
+      addTweetBox();
+
+      $('body').append('<div class = \'start\'></div>')
+
         var $body = $('body');
         var index = streams.home.length - 1;
         var startTweets = streams.home.length - 1;
@@ -29,13 +47,14 @@
         var $tweet = $('<div class = \'tweet\'><p> ' + tweet.message + '<p></div>');
         var $user = $('<div class = \'name\'><div class = \'username\'><a href="javascript:;">@' + tweet.user + '</a></div></div>');
         var $timestamp = $('<div class = \'timestamp\'>'+ tweet.created_at  +'</div>');
-        $user.appendTo($body);
+        $user.prependTo($('.start'));
         $tweet.appendTo($user);
         $timestamp.appendTo($tweet);
+        $user.show('slow')
       }
 
         function checkNewTweets(){
-          var newTweets = streams.home.length-1;
+          var newTweets = streams.home.length;
           if (newTweets !== startTweets){
             for (var i = startTweets; startTweets < newTweets; i++){
               makeTweet(i)
@@ -48,6 +67,7 @@
 
             $('body').on("click",".username",function seeTimeline(){
               if (!$('.return').length){
+                $('.author').remove();
                 var name = ($(this).text());
                 name = name.match(/@\b[a-z]*/)[0].slice(1,name.length);
                 $('.name').remove();
@@ -64,6 +84,7 @@
 
 
             $('body').on("click",".return",function(){
+              addTweetBox();
               $('.name').remove();
               $('.return').remove();
               checkNewTweets();
